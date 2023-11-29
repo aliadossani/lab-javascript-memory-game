@@ -26,7 +26,7 @@ const cards = [
 ];
 
 const memoryGame = new MemoryGame(cards); // set card value to memory instance
-
+memoryGame.shuffleCards();
 window.addEventListener('load', (event) => {
   let html = '';
 
@@ -60,7 +60,6 @@ window.addEventListener('load', (event) => {
             cardsArray.forEach((element) => {
               element.classList.toggle("turned");
             })
-
           }
           // empty the array
           cardsArray.length = 0;
@@ -73,6 +72,5 @@ window.addEventListener('load', (event) => {
         }, 300);
       }
     });
-
   });
 });
