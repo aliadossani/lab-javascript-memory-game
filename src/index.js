@@ -25,10 +25,11 @@ const cards = [
   { name: 'thor', img: 'thor.jpg' }
 ];
 
-const memoryGame = new MemoryGame(cards);
+const memoryGame = new MemoryGame(cards); // set card value to memory instance
 
 window.addEventListener('load', (event) => {
   let html = '';
+
   memoryGame.cards.forEach((pic) => {
     html += `
       <div class="card" data-card-name="${pic.name}">
@@ -41,15 +42,37 @@ window.addEventListener('load', (event) => {
   // Add all the divs to the HTML
   document.querySelector('#memory-board').innerHTML = html;
 
+  let cardsArray = [];
+
   // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
-      const element = document.getElementsByClassName("div");
-      if (element.length > 0) {
-        element.classList.add("turned")
-      }
+      card.classList.toggle("turned");
+      cardsArray.push(card);
 
-      console.log(`Card clicked: ${card}`);
+      if (cardsArray.length === 2) {
+        const card1Name = cardsArray[0].getAttribute('data-card-name');
+        const card2Name = cardsArray[1].getAttribute('data-card-name');
+        const isEqual = memoryGame.checkIfPair(card1Name, card2Name);
+        setTimeout(() => {
+          if (!isEqual) {
+            // toggle the cards
+            cardsArray.forEach((element) => {
+              element.classList.toggle("turned");
+            })
+
+          }
+          // empty the array
+          cardsArray.length = 0;
+
+          // Check if finished
+          const isFinished = memoryGame.checkIfFinished();
+          if (isFinished) {
+            alert("You won!")
+          }
+        }, 300);
+      }
     });
+
   });
 });
